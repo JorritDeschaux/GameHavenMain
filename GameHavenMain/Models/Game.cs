@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Models
 {
-	public class GameReview
+	public class Game
 	{
+		public string Story { get; set; }
 	}
 }

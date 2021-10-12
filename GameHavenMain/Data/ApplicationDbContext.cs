@@ -15,8 +15,7 @@ namespace GameHavenMain.Data
 
 		}
 
-		public DbSet<GameReview> GameReview { get; set; }
-		public DbSet<User> User { get; set; }
+		public DbSet<Test> Test { get; set; }
 
 	}
 }
