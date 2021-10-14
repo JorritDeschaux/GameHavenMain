@@ -30,6 +30,8 @@ namespace GameHavenMain
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+			services.AddHttpClient();
+
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{

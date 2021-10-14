@@ -11,6 +11,7 @@ namespace GameHavenMain.Controllers
 	public class DiscoverController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+
 		public DiscoverController(ApplicationDbContext context)
 		{
 			_context = context;

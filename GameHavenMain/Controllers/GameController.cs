@@ -1,41 +1,44 @@
 ﻿using GameHavenMain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Net.Http.Json;
+using RestSharp;
+using RestSharp.Serialization.Json;
+using Newtonsoft.Json;
 
 namespace GameHavenMain.Controllers
 {
 	[Route("api/[controller]/[action]")]
+	[ApiController]
 	public class GameController : Controller
 	{
 
-		HttpClientHandler _clientHandler = new HttpClientHandler();
-
 		[HttpGet]
-		public async Task<IActionResult> GameById(string gameName)
+		public IActionResult GetGamesByName(string gameName)
 		{
-			var game = await PingGame(gameName);
-			return game;
+			string body = $"?fields=*&search={gameName}";
+			var games = GetFromAPI(body);
+
+			return Ok(games);
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> PingGame(string gameName)
-		{
-			using (var httpClient = new HttpClient(_clientHandler))
-			{
-				var response = httpClient.GetAsync("https://api.igdb.com/v4/games/" + gameName).Result;
+		[HttpPost]
+		public IActionResult GetFromAPI(string body)
+		 {
+			List<GameModel> games = new List<GameModel>();
 
-				string apiResponse = await response.Content.ReadAsStringAsync();
-				Game game = new Game();
-				game = JsonConvert.DeserializeObject<Game>(apiResponse);
+			var client = new RestClient($"https://api.igdb.com/v4/games/{body}");
+			var request = new RestRequest();
 
-				return Ok(game);
-			}	
+			var data = ApiHelper.AuthorizedAPIRequest(client, request).Result;
+
+			games = JsonConvert.DeserializeObject<List<GameModel>>(data.Content);
+
+			return Ok(games);
 		}
-
 	}
 }
