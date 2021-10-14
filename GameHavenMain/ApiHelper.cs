@@ -17,6 +17,7 @@ namespace GameHavenMain
 			request.Method = Method.POST;
 			request.AddHeader("Client-ID", clientId);
 			request.AddHeader("Authorization", "Bearer " + accessToken);
+			request.AddHeader("Access-Control-Allow-Origin", "*");
 
 			var data = await client.ExecuteAsync(request);
 
