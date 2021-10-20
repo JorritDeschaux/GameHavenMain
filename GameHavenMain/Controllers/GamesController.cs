@@ -14,7 +14,7 @@ namespace GameHavenMain.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class GameController : Controller
+	public class GamesController : Controller
 	{
 
 		[HttpGet]

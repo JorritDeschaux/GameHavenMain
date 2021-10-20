@@ -8,14 +8,8 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Data
 {
-	public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
+	interface IApplicationDbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-		{
-
-		}
-
 		public DbSet<Test> Test { get; set; }
-
 	}
 }

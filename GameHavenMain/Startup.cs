@@ -28,6 +28,8 @@ namespace GameHavenMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 
+			services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
 			services.AddCors(options =>
 			{
 				options.AddDefaultPolicy(builder =>
