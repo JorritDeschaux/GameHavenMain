@@ -9,6 +9,10 @@ using System.Net.Http.Json;
 using RestSharp;
 using RestSharp.Serialization.Json;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Text;
+using IGDB;
 
 namespace GameHavenMain.Controllers
 {
@@ -20,25 +24,35 @@ namespace GameHavenMain.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetGamesByName(string gameName)
 		{
-			string body = $"?fields=*&search={gameName}";
-			var games = await GetFromAPI(body);
+			//var request = new RestRequest();
+			//request.AddJsonBody("fields id,name; where id = 4;");
 
+			//var games = await GetFromAPI(request);
+
+			//if (games != null)
+			//{
+			//	return Ok(games);
+			//}
+
+			//return StatusCode(StatusCodes.Status400BadRequest);
+
+			var igdb = new IGDBClient(
+			  // Found in Twitch Developer portal for your app
+			  "vl33o1v2tovnccfy3t2woim9l3yy9l",
+			  "hcah9xi55ozqexp7jswmynsmjrpt78"
+			);
+
+			var games = await igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name; search \"{gameName}\";");
 			return Ok(games);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> GetFromAPI(string body)
+		public async Task<IActionResult> GetFromAPI(RestRequest request)
 		 {
-			List<GameModel> games = new List<GameModel>();
-
-			var client = new RestClient($"https://api.igdb.com/v4/games/{body}");
-			var request = new RestRequest();
-
+			var client = new RestClient($"https://api.igdb.com/v4/{Endpoints.Games}");
 			var data = await ApiHelper.AuthorizedAPIRequest(client, request);
-
-			games = JsonConvert.DeserializeObject<List<GameModel>>(data.Content);
-
+			IEnumerable<Game> games = JsonConvert.DeserializeObject<List<Game>>(data.Content);
 			return Ok(games);
 		}
-	}
+    }
 }

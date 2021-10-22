@@ -1,6 +1,7 @@
 using GameHavenMain.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,15 +29,15 @@ namespace GameHavenMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 
-			services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-
 			services.AddCors(options =>
 			{
 				options.AddDefaultPolicy(builder =>
 				{
-					builder.WithOrigins("http://localhost:3001");
+					builder.WithOrigins("http://localhost:3000");
 				});
 			});
+
+			services.AddScoped<ApplicationDbContext>();
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -50,6 +51,8 @@ namespace GameHavenMain
 			});
 		}
 
+
+
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
@@ -61,11 +64,8 @@ namespace GameHavenMain
 			}
 
 			app.UseCors();
-
 			app.UseRouting();
-
 			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();

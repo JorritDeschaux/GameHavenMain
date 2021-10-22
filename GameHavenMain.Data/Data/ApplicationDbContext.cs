@@ -1,4 +1,5 @@
-﻿using GameHavenMain.Models;
+﻿using GameHavenMain.Domain.Entities.User;
+using GameHavenMain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,10 +16,11 @@ namespace GameHavenMain.Data
 
 		}
 
+		public DbSet<User> Users { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
 		}
-
 	}
 }
