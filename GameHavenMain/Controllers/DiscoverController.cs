@@ -1,4 +1,5 @@
 ﻿using GameHavenMain.Data;
+using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,9 +11,9 @@ namespace GameHavenMain.Controllers
 {
 	public class DiscoverController : Controller
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IApplicationDbContext _context;
 
-		public DiscoverController(ApplicationDbContext context)
+		public DiscoverController(IApplicationDbContext context)
 		{
 			_context = context;
 		}

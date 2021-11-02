@@ -1,6 +1,6 @@
-﻿using GameHavenMain.Domain.Entities.User;
-using GameHavenMain.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿
+using GameHavenMain.Data.DTO;
+using GameHavenMain.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,18 +9,14 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Data
 {
-	public class ApplicationDbContext : IdentityDbContext
+	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
 
 		}
 
-		public DbSet<User> Users { get; set; }
+		public DbSet<UserDTO> Users { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
-		{
-			base.OnModelCreating(builder);
-		}
 	}
 }

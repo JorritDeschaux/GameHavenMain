@@ -24,25 +24,13 @@ namespace GameHavenMain.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetGamesByName(string gameName)
 		{
-			//var request = new RestRequest();
-			//request.AddJsonBody("fields id,name; where id = 4;");
-
-			//var games = await GetFromAPI(request);
-
-			//if (games != null)
-			//{
-			//	return Ok(games);
-			//}
-
-			//return StatusCode(StatusCodes.Status400BadRequest);
-
+			//Creates and authenticates IGDB API using Twitch Developer Authentication with Client-Id and Secret Key.
 			var igdb = new IGDBClient(
-			  // Found in Twitch Developer portal for your app
 			  "vl33o1v2tovnccfy3t2woim9l3yy9l",
 			  "hcah9xi55ozqexp7jswmynsmjrpt78"
 			);
 
-			var games = await igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name; search \"{gameName}\";");
+			var games = await igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,summary; search \"Portal\";");
 			return Ok(games);
 		}
 

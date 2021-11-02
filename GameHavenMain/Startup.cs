@@ -1,4 +1,5 @@
 using GameHavenMain.Data;
+using GameHavenMain.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -37,9 +38,9 @@ namespace GameHavenMain
 				});
 			});
 
-			services.AddScoped<ApplicationDbContext>();
+			//services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
-			services.AddDbContext<ApplicationDbContext>(options =>
+			services.AddDbContext<DbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddHttpClient();
@@ -56,12 +57,10 @@ namespace GameHavenMain
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GameHavenMain v1"));
-			}
+
+			app.UseDeveloperExceptionPage();
+			app.UseSwagger();
+			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GameHavenMain v1"));
 
 			app.UseCors();
 			app.UseRouting();
