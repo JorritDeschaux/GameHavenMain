@@ -1,4 +1,5 @@
-﻿using GameHavenMain.Data.Interfaces;
+﻿using GameHavenMain.Data;
+using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,27 +13,26 @@ namespace GameHavenMain.Controllers
 {
 	public class AuthenticationController : Controller
 	{
-        private readonly IApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-		public AuthenticationController(IApplicationDbContext context)
+		public AuthenticationController(ApplicationDbContext context)
 		{
             _context = context;
 		}
 
 
 		[HttpPost("LogIn")]
-		[Authorize]
 		public async Task<IActionResult> LogIn([FromBody] Login credentials)
 		{
-            var user = await _context.Users
-                    .Where(u => u.Mail == credentials.Mail && u.Password == credentials.Password)
+            var user = await _context.User
+                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
                     .FirstOrDefaultAsync();
 
             if (user != null)
             {
                 Claim[] claims = new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.FirstName)
                 };
 

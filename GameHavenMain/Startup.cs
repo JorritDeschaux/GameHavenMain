@@ -1,5 +1,6 @@
 using GameHavenMain.Data;
 using GameHavenMain.Data.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,9 @@ namespace GameHavenMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 
+			services.AddDbContext<ApplicationDbContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
 			services.AddCors(options =>
 			{
 				options.AddDefaultPolicy(builder =>
@@ -39,28 +43,22 @@ namespace GameHavenMain
 				});
 			});
 
-			//services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
-			services.AddDbContext<DbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-			services.AddHttpClient();
+			//services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
 			services.AddAuthentication(options =>
 			{
-				options.DefaultAuthenticateScheme = "JwtBearer";
-				options.DefaultChallengeScheme = "JwtBearer";
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
 			.AddJwtBearer("JwtBearer", jwtOptions =>
 			{
 				jwtOptions.TokenValidationParameters = new TokenValidationParameters()
 				{
+					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = TokenHelper.SIGNING_KEY,
-					ValidateIssuer = true,
-					ValidateAudience = true,
-					ValidIssuer = "http://localhost:5000",
-					ValidAudience = "http://localhost:5000",
-					ValidateLifetime = true
+					ValidateIssuer = false,
+					ValidateAudience = false
 				};
 			});
 

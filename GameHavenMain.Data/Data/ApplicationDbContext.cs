@@ -9,14 +9,22 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Data
 {
-	public class ApplicationDbContext : DbContext, IApplicationDbContext
+	public class ApplicationDbContext : DbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+		public DbSet<UserDTO> User { get; set; }
+
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+			: base(options)
 		{
 
 		}
 
-		public DbSet<UserDTO> Users { get; set; }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+			modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+		}
+
 
 	}
 }
