@@ -1,11 +1,5 @@
-﻿using GameHavenMain.Data;
-using GameHavenMain.Data.Interfaces;
-using GameHavenMain.Models;
+﻿using GameHavenMain.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {

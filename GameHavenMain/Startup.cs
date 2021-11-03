@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,24 @@ namespace GameHavenMain
 
 			services.AddHttpClient();
 
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = "JwtBearer";
+				options.DefaultChallengeScheme = "JwtBearer";
+			})
+			.AddJwtBearer("JwtBearer", jwtOptions =>
+			{
+				jwtOptions.TokenValidationParameters = new TokenValidationParameters()
+				{
+					IssuerSigningKey = TokenHelper.SIGNING_KEY,
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidIssuer = "http://localhost:5000",
+					ValidAudience = "http://localhost:5000",
+					ValidateLifetime = true
+				};
+			});
+
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -64,6 +83,7 @@ namespace GameHavenMain
 
 			app.UseCors();
 			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseEndpoints(endpoints =>
 			{

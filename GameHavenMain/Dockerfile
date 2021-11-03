@@ -2,8 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 80
-
+EXPOSE 81
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
@@ -11,10 +10,6 @@ COPY ["GameHavenMain/GameHavenMain.csproj", "GameHavenMain/"]
 COPY ["GameHavenMain.Data/GameHavenMain.Data.csproj", "GameHavenMain.Data/"]
 RUN dotnet restore "GameHavenMain/GameHavenMain.csproj"
 COPY . .
-WORKDIR "/src/GameHavenMain"
-RUN dotnet build "GameHavenMain.csproj" -c Release -o /app/build
-
-FROM build AS publish
 RUN dotnet publish "GameHavenMain.csproj" -c Release -o /app/publish
 
 FROM base AS final

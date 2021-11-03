@@ -1,17 +1,9 @@
 ﻿using GameHavenMain.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net.Http.Json;
 using RestSharp;
-using RestSharp.Serialization.Json;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Text;
 using IGDB;
 
 namespace GameHavenMain.Controllers
@@ -26,11 +18,11 @@ namespace GameHavenMain.Controllers
 		{
 			//Creates and authenticates IGDB API using Twitch Developer Authentication with Client-Id and Secret Key.
 			var igdb = new IGDBClient(
-			  "vl33o1v2tovnccfy3t2woim9l3yy9l",
-			  "hcah9xi55ozqexp7jswmynsmjrpt78"
+			  "ptz8ma4spnaia96n78yerskcg7pyyr",
+			  "g1gqnneu4bdwvr46fqx2x7nc84a129"
 			);
 
-			var games = await igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name,summary; search \"Portal\";");
+			var games = await igdb.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: $"fields id,name; search \"Portal\";");
 			return Ok(games);
 		}
 
