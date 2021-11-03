@@ -18,6 +18,7 @@ namespace GameHavenMain.Controllers
 		[Route("api/[controller]")]
 		public IActionResult Index()
 		{
+			//Call API to show new games on front page
 			return Ok();
 		}
 	}
