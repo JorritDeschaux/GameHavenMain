@@ -33,7 +33,7 @@ namespace GameHavenMain
 		{
 
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{
