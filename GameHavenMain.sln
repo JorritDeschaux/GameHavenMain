@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHavenMain", "GameHavenM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHavenMain.Data", "GameHavenMain.Data\GameHavenMain.Data.csproj", "{46809C9A-BC34-4A9D-9AFE-D381A1184795}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{46809C9A-BC34-4A9D-9AFE-D381A1184795}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46809C9A-BC34-4A9D-9AFE-D381A1184795}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46809C9A-BC34-4A9D-9AFE-D381A1184795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,9 +21,10 @@ namespace GameHavenMain.Controllers
 		}
 
 
-		[HttpPost("LogIn")]
-		public async Task<IActionResult> LogIn([FromBody] Login credentials)
+		[HttpPost("Login")]
+		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
+            
             var user = await _context.User
                     .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
                     .FirstOrDefaultAsync();

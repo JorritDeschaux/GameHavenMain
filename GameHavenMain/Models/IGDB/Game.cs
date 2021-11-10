@@ -19,6 +19,7 @@ namespace GameHavenMain.Models
 		public int[] Platforms { get; set; }
 
 		public DateTime First_Release_Date { get; set; }
+
 		public int Hypes { get; set; }
 
 		public int Follows { get; set; }
