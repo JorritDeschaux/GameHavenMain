@@ -1,37 +1,37 @@
 ﻿using GameHavenMain.Data;
+using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-    [Route("api/[controller]/[action]")]
+	[Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthenticationController : Controller
 	{
-        private readonly ApplicationDbContext _context;
+		private readonly IUserRepo _repo;
 
-		public AuthenticationController(ApplicationDbContext context)
+		public AuthenticationController(IUserRepo repo)
 		{
-            _context = context;
+            _repo = repo;
 		}
-
 
 		[HttpPost]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
-            
-            var user = await _context.User
-                    .Where(u => u.Email == credentials.Mail && u.Password == credentials.Password)
-                    .FirstOrDefaultAsync();
 
+            UserDTO loginInfo = new UserDTO
+            {
+                Email = credentials.Mail,
+                Password = credentials.Password
+            };
+
+            var user = await _repo.GetLogin(loginInfo);
+                    
             if (user != null)
             {
                 Claim[] claims = new Claim[]

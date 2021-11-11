@@ -1,5 +1,6 @@
 using GameHavenMain.Data;
 using GameHavenMain.Data.Interfaces;
+using GameHavenMain.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,8 +32,9 @@ namespace GameHavenMain
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-
-			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddScoped<IUserRepo, UserRepo>();
+			
+			services.AddDbContext<UserContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{

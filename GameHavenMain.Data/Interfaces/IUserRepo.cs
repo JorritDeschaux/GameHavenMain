@@ -1,5 +1,4 @@
 ﻿using GameHavenMain.Data.DTO;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Data.Interfaces
 {
-	public interface IApplicationDbContext
+	public interface IUserRepo
 	{
-		public DbSet<UserDTO> Users { get; set; }
+		public Task<UserDTO> GetLogin(UserDTO loginCredentials);
 	}
 }

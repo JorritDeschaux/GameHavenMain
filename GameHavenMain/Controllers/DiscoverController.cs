@@ -1,5 +1,4 @@
 ﻿using GameHavenMain.Data;
-using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using IGDB;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +11,6 @@ namespace GameHavenMain.Controllers
 	[ApiController]
 	public class DiscoverController : Controller
 	{
-		private readonly ApplicationDbContext _context;
-
-		public DiscoverController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
 
 		[HttpGet]
 		public async Task<IActionResult> Index()
