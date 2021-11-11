@@ -5,13 +5,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	public class AuthenticationController : Controller
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class AuthenticationController : Controller
 	{
         private readonly ApplicationDbContext _context;
 
@@ -21,7 +24,7 @@ namespace GameHavenMain.Controllers
 		}
 
 
-		[HttpPost("Login")]
+		[HttpPost]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
             
@@ -39,16 +42,38 @@ namespace GameHavenMain.Controllers
 
                 var token = TokenHelper.CreateToken(claims);
 
-                return Ok(TokenHelper.WriteToken(token));
+                Response.Cookies.Append("token", TokenHelper.WriteToken(token), new CookieOptions
+                {
+                    HttpOnly = true
+                });
+
+                return Ok(new
+				{
+                    message = "Succes!" + TokenHelper.WriteToken(token)
+
+                });
             }
             else
             {
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
-
         }
 
-        [HttpPost("Register")]
+        [HttpGet]
+        public async Task<IActionResult> User()
+		{
+            var jwt = Request.Cookies["token"];
+
+            var token = TokenHelper.Verify(jwt);
+
+            //To Add: Get user id from token
+
+            //return Ok(user);
+
+            return Ok();
+		}
+
+        [HttpPost]
         public async Task<IActionResult> Register()
 		{
             return Ok();

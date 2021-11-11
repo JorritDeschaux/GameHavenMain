@@ -40,5 +40,22 @@ namespace GameHavenMain
 			return tokenHandler.WriteToken(token);
 		}
 
+		public static SecurityToken Verify(string jwt)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.UTF8.GetBytes(SECRET_KEY);
+
+			tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+			{
+				IssuerSigningKey = new SymmetricSecurityKey(key),
+				ValidateIssuerSigningKey = true,
+				ValidateIssuer = false,
+				ValidateAudience = false
+
+			}, out SecurityToken validatedToken);
+
+			return validatedToken;
+		}
+
 	}
 }
