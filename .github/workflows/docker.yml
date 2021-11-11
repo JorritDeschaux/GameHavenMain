@@ -7,24 +7,29 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+      
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: docker build
+  deploy:                                         
+    runs-on: ubuntu-latest                        
+    steps:        
+      - uses: actions/checkout@v1
+      - name: Publish Main to Docker Hub
         run: |
-          docker build ./gamehavenmain -t ${DOCKER_REGISTRY-}gamehavenmain
+          echo "${{ secrets.DOCKERPW }}" | docker login -u "jorritdeschaux" --password-stdin
+          docker image build -t jorritdeschaux/gamehavenmain:1
+          docker push jorritdeschaux/gamehavenmain:1
           
-      - name: docker build
+      - name: Publish MySQL to Docker Hub
         run: |
-          docker build ./db -t mysql:8.0
+          echo "${{ secrets.DOCKERPW }}" | docker login -u "jorritdeschaux" --password-stdin
+          docker image build -t jorritdeschaux/gamehavenmain:mysql
+          docker push jorritdeschaux/gamehavenmain:mysql
           
-      - name: docker build
+      - name: Publish PHPMyAdmin to Docker Hub
         run: |
-          docker build ./db -t phpmyadmin/phpmyadmin
+          echo "${{ secrets.DOCKERPW }}" | docker login -u "jorritdeschaux" --password-stdin
+          docker image build -t jorritdeschaux/gamehavenmain:pma
+          docker push jorritdeschaux/gamehavenmain:pma
+
