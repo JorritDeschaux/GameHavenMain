@@ -32,7 +32,7 @@ namespace GameHavenMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 
-			services.AddDbContextPool<ApplicationDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{

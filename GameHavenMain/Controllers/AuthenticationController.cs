@@ -48,7 +48,8 @@ namespace GameHavenMain.Controllers
 
         }
 
-		public async Task<IActionResult> Register()
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register()
 		{
             return Ok();
 		}
