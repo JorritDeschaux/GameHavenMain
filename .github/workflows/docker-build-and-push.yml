@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./Dockerfile
+          file: ./GameHavenMain/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/gamehavenmain:1
 
