@@ -47,11 +47,7 @@ namespace GameHavenMain.Controllers
                     HttpOnly = true
                 });
 
-                return Ok(new
-				{
-                    message = "Succes!" + TokenHelper.WriteToken(token)
-
-                });
+                return Ok();
             }
             else
             {
