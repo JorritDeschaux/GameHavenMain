@@ -16,7 +16,7 @@ namespace GameHavenMain
 		public static readonly SymmetricSecurityKey SIGNING_KEY = new
 			SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 
-		public static SecurityToken CreateToken(Claim[] claims)
+		public static JwtSecurityToken CreateToken(Claim[] claims)
 		{
 			var mySecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 
@@ -29,18 +29,18 @@ namespace GameHavenMain
 				SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
 			};
 
-			var token = tokenHandler.CreateToken(tokenDescriptor);
+			var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
 			return token;
 		}
 
-		public static string WriteToken(SecurityToken token)
+		public static string WriteToken(JwtSecurityToken token)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			return tokenHandler.WriteToken(token);
 		}
 
-		public static SecurityToken Verify(string jwt)
+		public static JwtSecurityToken Verify(string jwt)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.UTF8.GetBytes(SECRET_KEY);
@@ -54,7 +54,7 @@ namespace GameHavenMain
 
 			}, out SecurityToken validatedToken);
 
-			return validatedToken;
+			return (JwtSecurityToken)validatedToken;
 		}
 
 	}

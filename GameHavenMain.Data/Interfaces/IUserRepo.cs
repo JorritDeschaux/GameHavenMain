@@ -10,5 +10,7 @@ namespace GameHavenMain.Data.Interfaces
 	public interface IUserRepo
 	{
 		public Task<UserDTO> GetLogin(UserDTO loginCredentials);
+		public Task<UserDTO> GetUser(int id);
+
 	}
 }

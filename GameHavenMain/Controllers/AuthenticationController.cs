@@ -4,6 +4,8 @@ using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -37,17 +39,16 @@ namespace GameHavenMain.Controllers
                 Claim[] claims = new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.FirstName)
+                    new Claim("firstname", user.FirstName),                    
+                    new Claim("middlename", user.MiddleName),
+                    new Claim(ClaimTypes.Surname, user.LastName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("username", user.Username)
                 };
 
                 var token = TokenHelper.CreateToken(claims);
 
-                Response.Cookies.Append("token", TokenHelper.WriteToken(token), new CookieOptions
-                {
-                    HttpOnly = true
-                });
-
-                return Ok();
+                return Ok(TokenHelper.WriteToken(token));
             }
             else
             {
@@ -58,15 +59,19 @@ namespace GameHavenMain.Controllers
         [HttpGet]
         public async Task<IActionResult> User()
 		{
-            var jwt = Request.Cookies["token"];
+
+            var jwt = Request.Headers["Authorization"];
+
+            if (jwt == "null")
+                return Ok();
 
             var token = TokenHelper.Verify(jwt);
 
-            //To Add: Get user id from token
+            int id = Convert.ToInt32(token.Payload["nameid"].ToString());
+            var user = await _repo.GetUser(id);
 
-            //return Ok(user);
+            return Ok(user);
 
-            return Ok();
 		}
 
         [HttpPost]

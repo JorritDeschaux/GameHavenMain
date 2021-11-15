@@ -24,5 +24,12 @@ namespace GameHavenMain.Data.Repositories
 				.Where(u => u.Email == loginCredentials.Email && u.Password == loginCredentials.Password)
 				.FirstOrDefaultAsync();
 		}
+
+		public async Task<UserDTO> GetUser(int id)
+		{
+			return await _context.User
+				.Where(u => u.Id == id)
+				.FirstOrDefaultAsync();
+		}
 	}
 }
