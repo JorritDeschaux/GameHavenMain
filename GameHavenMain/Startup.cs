@@ -33,8 +33,9 @@ namespace GameHavenMain
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddScoped<IUserRepo, UserRepo>();
-			
-			services.AddDbContext<UserContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddScoped<IGameRepo, GameRepo>();
+
+			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{

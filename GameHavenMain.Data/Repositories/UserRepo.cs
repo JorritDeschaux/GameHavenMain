@@ -11,9 +11,9 @@ namespace GameHavenMain.Data.Repositories
 {
 	public class UserRepo : IUserRepo
 	{
-		private UserContext _context;
+		private readonly ApplicationDbContext _context;
 
-		public UserRepo(UserContext context)
+		public UserRepo(ApplicationDbContext context)
 		{
 			_context = context;
 		}
@@ -30,6 +30,21 @@ namespace GameHavenMain.Data.Repositories
 			return await _context.User
 				.Where(u => u.Id == id)
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task<UserDTO> DeleteUser(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<UserDTO> UpdateUser(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<UserDTO> CreateUser(UserDTO registerInfo)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

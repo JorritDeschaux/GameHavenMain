@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace GameHavenMain.Data.DTO
+namespace GameHavenMain.Models
 {
-	public class UserDTO
+	public class Register
 	{
-		[Key]
 		public int Id { get; set; }
 
 		public string Email { get; set; }
@@ -17,6 +14,8 @@ namespace GameHavenMain.Data.DTO
 		public string Username { get; set; }
 
 		public string Password { get; set; }
+
+		public string ConfirmPassword { get; set; }
 
 		public string FirstName { get; set; }
 
