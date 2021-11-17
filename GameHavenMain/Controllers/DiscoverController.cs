@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace GameHavenMain.Controllers
 {
 	[Route("api/[controller]/[action]")]
+	[ApiVersion("1")]
 	[ApiController]
 	public class DiscoverController : Controller
 	{

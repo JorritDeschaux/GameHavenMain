@@ -32,6 +32,13 @@ namespace GameHavenMain
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddApiVersioning(o =>
+			{
+				o.AssumeDefaultVersionWhenUnspecified = true;
+				o.DefaultApiVersion = new ApiVersion(1, 0);
+				o.ReportApiVersions = true;
+			});
+
 			services.AddScoped<IUserRepo, UserRepo>();
 			services.AddScoped<IGameRepo, GameRepo>();
 
@@ -47,8 +54,6 @@ namespace GameHavenMain
 					builder.AllowCredentials();
 				});
 			});
-
-			//services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
 			services.AddAuthentication(options =>
 			{

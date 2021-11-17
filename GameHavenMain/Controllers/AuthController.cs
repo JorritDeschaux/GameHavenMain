@@ -12,17 +12,20 @@ using System.Threading.Tasks;
 namespace GameHavenMain.Controllers
 {
 	[Route("api/[controller]/[action]")]
+	[ApiVersion("1")]
+    [ApiVersion("2")]
     [ApiController]
-    public class AuthenticationController : Controller
+    public class AuthController : Controller
 	{
 		private readonly IUserRepo _repo;
 
-		public AuthenticationController(IUserRepo repo)
+		public AuthController(IUserRepo repo)
 		{
             _repo = repo;
 		}
 
 		[HttpPost]
+        [MapToApiVersion("2")]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
 
