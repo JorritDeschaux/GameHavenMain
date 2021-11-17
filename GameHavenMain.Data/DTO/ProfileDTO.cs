@@ -12,11 +12,7 @@ namespace GameHavenMain.Data.DTO
 
 		[Key]
 		public int Id { get; set; }
-
-
 		public int User_Id { get; set; }
-
-
 		public string Description { get; set; }
 
 	}
