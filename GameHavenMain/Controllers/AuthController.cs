@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/auth")]
 	[ApiVersion("1")]
     [ApiVersion("2")]
     [ApiController]
@@ -25,8 +25,8 @@ namespace GameHavenMain.Controllers
             _repo = repo;
 		}
 
-		[HttpPost]
-        [MapToApiVersion("1")]
+
+		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
 
@@ -61,7 +61,7 @@ namespace GameHavenMain.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("verify")]
         public async Task<IActionResult> VerifyUser()
 		{
 
@@ -79,7 +79,7 @@ namespace GameHavenMain.Controllers
 
 		}
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register credentials)
         {
             if (credentials.Password != credentials.ConfirmPassword)
