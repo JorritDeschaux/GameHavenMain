@@ -9,6 +9,7 @@ namespace GameHavenMain.Data.DTO
 {
 	public class ReviewDTO
 	{
+
 		[Key]
 		public int Id { get; set; }
 
@@ -19,5 +20,6 @@ namespace GameHavenMain.Data.DTO
 		public string Description { get; set; }
 
 		public int Rating { get; set; }
+
 	}
 }
