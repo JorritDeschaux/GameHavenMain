@@ -1,5 +1,6 @@
 ﻿using GameHavenMain.Data;
 using GameHavenMain.Data.DTO;
+using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,18 +12,21 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/auth")]
+	[ApiVersion("1")]
+    [ApiVersion("2")]
     [ApiController]
-    public class AuthenticationController : Controller
+    public class AuthController : Controller
 	{
 		private readonly IUserRepo _repo;
 
-		public AuthenticationController(IUserRepo repo)
+		public AuthController(IUserRepo repo)
 		{
             _repo = repo;
 		}
 
-		[HttpPost]
+
+		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
 
@@ -52,12 +56,13 @@ namespace GameHavenMain.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized);
+                return StatusCode(StatusCodes.Status401Unauthorized, "No user exists with the given credentials!");
             }
+
         }
 
-        [HttpGet]
-        public async Task<IActionResult> User()
+        [HttpGet("verify")]
+        public async Task<IActionResult> VerifyUser()
 		{
 
             var jwt = Request.Headers["Authorization"];
@@ -68,16 +73,45 @@ namespace GameHavenMain.Controllers
             var token = TokenHelper.Verify(jwt);
 
             int id = Convert.ToInt32(token.Payload["nameid"].ToString());
-            var user = await _repo.GetUser(id);
+            var user = await _repo.GetUserById(id);
 
             return Ok(user);
 
 		}
 
-        [HttpPost]
-        public async Task<IActionResult> Register()
-		{
-            return Ok();
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] Register credentials)
+        {
+            if (credentials.Password != credentials.ConfirmPassword)
+			{
+                return StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
+            UserDTO newUser = new()
+            {
+
+                Birthday = credentials.Birthday,
+                RegisterDate = DateTime.Now,
+                Email = credentials.Email,
+                FirstName = credentials.FirstName,
+                MiddleName = credentials.MiddleName,
+                LastName = credentials.LastName,
+                Password = PasswordEncrypter.EncryptPassword(credentials.Password),
+                Phone = credentials.Phone,
+                Username = credentials.Username,
+
+            };
+
+            var success = await _repo.CreateUser(newUser);
+
+            if (success)
+            {
+                return Ok();
+            }
+			else
+			{
+                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database!");
+            }
 		}
 	}
 }

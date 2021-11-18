@@ -1,27 +1,22 @@
 using GameHavenMain.Data;
+using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GameHavenMain
 {
 	public class Startup
 	{
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -32,6 +27,13 @@ namespace GameHavenMain
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddApiVersioning(o =>
+			{
+				o.AssumeDefaultVersionWhenUnspecified = true;
+				o.DefaultApiVersion = new ApiVersion(1, 0);
+				o.ReportApiVersions = true;
+			});
+
 			services.AddScoped<IUserRepo, UserRepo>();
 			services.AddScoped<IGameRepo, GameRepo>();
 
@@ -47,8 +49,6 @@ namespace GameHavenMain
 					builder.AllowCredentials();
 				});
 			});
-
-			//services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
 			services.AddAuthentication(options =>
 			{
@@ -92,5 +92,6 @@ namespace GameHavenMain
 				endpoints.MapControllers();
 			});
 		}
+
 	}
 }

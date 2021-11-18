@@ -1,4 +1,5 @@
 ﻿using GameHavenMain.Data.DTO;
+using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,7 @@ namespace GameHavenMain.Data.Repositories
 {
 	public class UserRepo : IUserRepo
 	{
+
 		private readonly ApplicationDbContext _context;
 
 		public UserRepo(ApplicationDbContext context)
@@ -18,33 +20,82 @@ namespace GameHavenMain.Data.Repositories
 			_context = context;
 		}
 
+
 		public async Task<UserDTO> GetLogin(UserDTO loginCredentials)
 		{
+			var hashedPassword = PasswordEncrypter.EncryptPassword(loginCredentials.Password);
+
 			return await _context.User
-				.Where(u => u.Email == loginCredentials.Email && u.Password == loginCredentials.Password)
+				.Where(u => u.Email == loginCredentials.Email && u.Password == hashedPassword)
 				.FirstOrDefaultAsync();
+
 		}
 
-		public async Task<UserDTO> GetUser(int id)
+
+		public async Task<UserDTO> GetUserById(int id)
 		{
+
 			return await _context.User
 				.Where(u => u.Id == id)
 				.FirstOrDefaultAsync();
+
 		}
 
-		public async Task<UserDTO> DeleteUser(int id)
+		public async Task<bool> CheckEmailExists(string email)
 		{
-			throw new NotImplementedException();
+			var user = await _context.User
+				.Where(u => u.Email == email)
+				.FirstOrDefaultAsync();
+
+			if (user != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
 		}
+
+
+		public async void DeleteUser(int id)
+		{
+
+			var user = await GetUserById(id);
+			_context.Remove(user);
+			_context.SaveChanges();
+
+		}
+
 
 		public async Task<UserDTO> UpdateUser(int id)
 		{
-			throw new NotImplementedException();
+
+			//TODO add create function
+
+			return null;
+
 		}
 
-		public async Task<UserDTO> CreateUser(UserDTO registerInfo)
+
+		public async Task<bool> CreateUser(UserDTO newUser)
 		{
-			throw new NotImplementedException();
+
+			//TODO add create function
+			var exists = await CheckEmailExists(newUser.Email);
+
+			if(exists)
+			{
+				return false;
+			}
+
+			_context.Add(newUser);
+			_context.SaveChanges();
+
+			return true;
+
 		}
+
 	}
 }

@@ -5,10 +5,18 @@ namespace GameHavenMain.Data.Interfaces
 {
 	public interface IUserRepo
 	{
+
 		public Task<UserDTO> GetLogin(UserDTO loginCredentials);
-		public Task<UserDTO> GetUser(int id);
-		public Task<UserDTO> DeleteUser(int id);
+
+		public Task<UserDTO> GetUserById(int id);
+
+		public Task<bool> CheckEmailExists(string email);
+
+		public void DeleteUser(int id);
+
 		public Task<UserDTO> UpdateUser(int id);
-		public Task<UserDTO> CreateUser(UserDTO registerInfo);
+
+		public Task<bool> CreateUser(UserDTO newUser);
+
 	}
 }
