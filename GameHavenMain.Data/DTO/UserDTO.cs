@@ -9,6 +9,7 @@ namespace GameHavenMain.Data.DTO
 {
 	public class UserDTO
 	{
+
 		[Key]
 		public int Id { get; set; }
 
@@ -29,5 +30,6 @@ namespace GameHavenMain.Data.DTO
 		public string Phone { get; set; }
 
 		public DateTime RegisterDate { get; set; }
+
 	}
 }

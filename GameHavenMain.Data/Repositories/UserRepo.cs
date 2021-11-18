@@ -12,14 +12,12 @@ namespace GameHavenMain.Data.Repositories
 {
 	public class UserRepo : IUserRepo
 	{
-
 		private readonly ApplicationDbContext _context;
 
 		public UserRepo(ApplicationDbContext context)
 		{
 			_context = context;
 		}
-
 
 		public async Task<UserDTO> GetLogin(UserDTO loginCredentials)
 		{
@@ -69,12 +67,13 @@ namespace GameHavenMain.Data.Repositories
 		}
 
 
-		public async Task<UserDTO> UpdateUser(int id)
+		public async Task<UserDTO> UpdateUser(UserDTO updatedUser)
 		{
 
-			//TODO add create function
+			_context.Update(updatedUser.Id);
+			_context.SaveChanges();
 
-			return null;
+			return await GetUserById(updatedUser.Id);
 
 		}
 
@@ -85,7 +84,7 @@ namespace GameHavenMain.Data.Repositories
 			//TODO add create function
 			var exists = await CheckEmailExists(newUser.Email);
 
-			if(exists)
+			if (exists)
 			{
 				return false;
 			}
@@ -96,6 +95,5 @@ namespace GameHavenMain.Data.Repositories
 			return true;
 
 		}
-
 	}
 }

@@ -14,7 +14,7 @@ namespace GameHavenMain.Data.Interfaces
 
 		public void DeleteUser(int id);
 
-		public Task<UserDTO> UpdateUser(int id);
+		public Task<UserDTO> UpdateUser(UserDTO updatedUser);
 
 		public Task<bool> CreateUser(UserDTO newUser);
 
