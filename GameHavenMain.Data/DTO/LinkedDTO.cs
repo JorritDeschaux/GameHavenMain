@@ -12,7 +12,9 @@ namespace GameHavenMain.Data.DTO
 
 		[Key]
 		public int Id { get; set; }
+
 		public int OtherId_One { get; set; }
+
 		public int OtherId_Two { get; set; }
 
 	}

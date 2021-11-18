@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace GameHavenMain.Models.IGDB
+namespace GameHavenMain.Data.DTO
 {
-	public class Cover
+	public class CoverDTO
 	{
 
+		[Key]
 		public int Id { get; set; }
 
 		public int Game { get; set; }

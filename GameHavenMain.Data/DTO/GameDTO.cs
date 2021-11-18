@@ -1,15 +1,16 @@
-﻿using GameHavenMain.Models.IGDB;
-using Microsoft.AspNetCore.Mvc;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GameHavenMain.Models
+namespace GameHavenMain.Data.DTO
 {
-	public class Game
+	public class GameDTO
 	{
+
+		[Key]
 		public int Id { get; set; }
 
 		public string Name { get; set; }
@@ -28,7 +29,7 @@ namespace GameHavenMain.Models
 
 		public int Rating_Count { get; set; }
 
-		public Cover Cover { get; set; }
+		public CoverDTO Cover { get; set; }
 
 	}
 }
