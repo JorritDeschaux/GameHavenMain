@@ -61,6 +61,7 @@ namespace GameHavenMain.Controllers
 
         }
 
+
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyUser()
 		{
@@ -78,6 +79,7 @@ namespace GameHavenMain.Controllers
             return Ok(user);
 
 		}
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register credentials)

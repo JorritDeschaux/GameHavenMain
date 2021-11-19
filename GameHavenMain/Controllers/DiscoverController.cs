@@ -1,6 +1,7 @@
 ﻿using GameHavenMain.Data;
 using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
+using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
 using IGDB;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +10,24 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/discover")]
 	[ApiController]
 	public class DiscoverController : Controller
 	{
 
+		private readonly IGameRepo _repo;
+
+		public DiscoverController(IGameRepo repo)
+		{
+			_repo = repo;
+		}
+
+
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-			//Call API to show new games on front page
-			var igdb = ApiHelper.CreateClient();
 
-			var games = await igdb.QueryAsync<GameDTO>(IGDBClient.Endpoints.Games, query: $"f id,name,rating,cover.*; " +
-																						$"s rating desc; " +
-																						$"w rating != 0 & first_release_date >= 1630792800; " +
-																						$"l 50; ");
-
+			var games = await _repo.GamesNew();
 
 			if(games != null)
 			{

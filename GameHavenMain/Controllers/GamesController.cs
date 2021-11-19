@@ -1,30 +1,48 @@
-﻿using GameHavenMain.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft.Json;
-using IGDB;
 using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.DTO;
+using GameHavenMain.Data.Interfaces;
 
 namespace GameHavenMain.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/games")]
 	[ApiController]
 	public class GamesController : Controller
 	{
+		private readonly IGameRepo _repo;
 
-		[HttpGet]
-		public async Task<IActionResult> SearchGame(string gameName)
+		public GamesController(IGameRepo repo)
+		{
+			_repo = repo;
+		}
+
+
+		[HttpGet("{id}")]
+		public async Task<IActionResult> SearchById(int id)
+		{
+
+			var game = await _repo.GameById(id);
+
+			if (game != null)
+			{
+				return Ok(game);
+			}
+			else
+			{
+				return BadRequest("No search results found!");
+			}
+
+		}
+
+
+		[HttpGet("search/{gameName}")]
+		public async Task<IActionResult> SearchGame([FromBody] string gameName)
 		{
 
 			if(gameName == null || gameName == string.Empty) { return BadRequest("Search body can't be empty!"); }
 
-			//Creates and authenticates IGDB API using Twitch Developer Authentication with Client-Id and Secret Key.
-			var igdb = ApiHelper.CreateClient();
-
-			var games = await igdb.QueryAsync<GameDTO>(IGDBClient.Endpoints.Games, query: $"fields id,name,summary,rating,cover.*; search \"{gameName}\"; l 50;") ;
+			var games = await _repo.GamesByName(gameName);
 			if(games != null)
 			{
 				return Ok(games);
