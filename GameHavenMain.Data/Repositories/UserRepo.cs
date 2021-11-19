@@ -57,12 +57,21 @@ namespace GameHavenMain.Data.Repositories
 		}
 
 
-		public async void DeleteUser(int id)
+		public async Task<bool> DeleteUser(int id)
 		{
 
 			var user = await GetUserById(id);
 			_context.Remove(user);
 			_context.SaveChanges();
+
+			if (user != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 
 		}
 

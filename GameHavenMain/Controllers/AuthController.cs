@@ -3,6 +3,7 @@ using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -26,7 +27,26 @@ namespace GameHavenMain.Controllers
 		}
 
 
-		[HttpPost("login")]
+        [HttpGet("verify")]
+        public async Task<IActionResult> Verify()
+        {
+
+            var jwt = Request.Headers["Authorization"];
+
+            if (jwt == "null")
+                return Ok();
+
+            var token = TokenHelper.Verify(jwt);
+
+            int id = Convert.ToInt32(token.Payload["nameid"].ToString());
+            var user = await _repo.GetUserById(id);
+
+            return Ok(user);
+
+        }
+
+
+        [HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] Login credentials)
 		{
 
@@ -60,25 +80,6 @@ namespace GameHavenMain.Controllers
             }
 
         }
-
-
-        [HttpGet("verify")]
-        public async Task<IActionResult> VerifyUser()
-		{
-
-            var jwt = Request.Headers["Authorization"];
-
-            if (jwt == "null")
-                return Ok();
-
-            var token = TokenHelper.Verify(jwt);
-
-            int id = Convert.ToInt32(token.Payload["nameid"].ToString());
-            var user = await _repo.GetUserById(id);
-
-            return Ok(user);
-
-		}
 
 
         [HttpPost("register")]
@@ -115,5 +116,22 @@ namespace GameHavenMain.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database!");
             }
 		}
+
+        
+        [Authorize]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+		{
+            var success = await _repo.DeleteUser(id);
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database!");
+            }
+        }
 	}
 }

@@ -12,7 +12,7 @@ namespace GameHavenMain.Data.Interfaces
 
 		public Task<bool> CheckEmailExists(string email);
 
-		public void DeleteUser(int id);
+		public Task<bool> DeleteUser(int id);
 
 		public Task<UserDTO> UpdateUser(UserDTO updatedUser);
 
