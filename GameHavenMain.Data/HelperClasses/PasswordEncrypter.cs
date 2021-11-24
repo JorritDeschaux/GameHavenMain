@@ -1,36 +1,59 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using SimpleCrypto;
+using GameHavenMain.Data.DTO;
 
 namespace GameHavenMain.Data.HelperClasses
 {
 	public static class PasswordEncrypter
 	{
 
-		private const string SECRET_KEY = "0N?;g}|Y`l0FkbgS5@IIKxlhfcie@Qh>$J[b5X<lTJzFnMjkEC:m#k4FwCb5g";
-
-		public static string EncryptPassword(string password)
+		public static UserDTO EncryptUserPassword(UserDTO user, string password)
 		{
+			ICryptoService cryptoService = new PBKDF2();
 
-			string input = password + SECRET_KEY;
+			var hash = cryptoService.Compute(password);
 
-			MD5 md5Hasher = MD5.Create();
+			user.Password = hash;
+			user.Salt = cryptoService.Salt;
 
-			byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
-
-			StringBuilder sBuilder = new StringBuilder(); 
-
-			for (int i = 0; i < data.Length; i++)
-			{
-				sBuilder.Append(data[i].ToString("x2"));
-			}
-
-			return sBuilder.ToString();
-
+			return user;
 		}
+
+		public static string EncryptPasswordWithGivenSalt(string password, string salt)
+		{
+			ICryptoService cryptoService = new PBKDF2();
+
+			var hash = cryptoService.Compute(password, salt);
+
+			return hash;
+		}
+
+
+		//public static string EncryptPassword(string password)
+		//{
+
+		//	string input = password + SECRET_KEY;
+
+		//	MD5 md5Hasher = MD5.Create();
+
+		//	byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+
+		//	StringBuilder sBuilder = new StringBuilder(); 
+
+		//	for (int i = 0; i < data.Length; i++)
+		//	{
+		//		sBuilder.Append(data[i].ToString("x2"));
+		//	}
+
+		//	return sBuilder.ToString();
+
+		//}
 
 	}
 }

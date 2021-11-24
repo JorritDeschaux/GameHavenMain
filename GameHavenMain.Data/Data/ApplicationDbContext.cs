@@ -16,9 +16,13 @@ namespace GameHavenMain.Data
         }
 
         public DbSet<UserDTO> User { get; set; }
+
         public DbSet<ReviewDTO> UserReview { get; set; }
+
         public DbSet<LinkedDTO> GameReview { get; set; }
+
         public DbSet<ProfileDTO> ProfilePage { get; set; }
+
         public DbSet<LinkedDTO> FavGame { get; set; }
 
     }

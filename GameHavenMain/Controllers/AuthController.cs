@@ -92,18 +92,17 @@ namespace GameHavenMain.Controllers
 
             UserDTO newUser = new()
             {
-
                 Birthday = credentials.Birthday,
                 RegisterDate = DateTime.Now,
                 Email = credentials.Email,
                 FirstName = credentials.FirstName,
                 MiddleName = credentials.MiddleName,
                 LastName = credentials.LastName,
-                Password = PasswordEncrypter.EncryptPassword(credentials.Password),
                 Phone = credentials.Phone,
                 Username = credentials.Username,
-
             };
+
+            newUser = PasswordEncrypter.EncryptUserPassword(newUser, credentials.Password);
 
             var success = await _repo.CreateUser(newUser);
 

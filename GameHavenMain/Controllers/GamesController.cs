@@ -37,7 +37,7 @@ namespace GameHavenMain.Controllers
 
 
 		[HttpGet("search/{gameName}")]
-		public async Task<IActionResult> SearchGame([FromBody] string gameName)
+		public async Task<IActionResult> SearchGame(string gameName)
 		{
 
 			if(gameName == null || gameName == string.Empty) { return BadRequest("Search body can't be empty!"); }

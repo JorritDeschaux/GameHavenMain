@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHavenMain.Data", "GameH
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHavenMain.Tests", "..\GameHavenMain.Tests\GameHavenMain.Tests.csproj", "{F4854DBF-0EAB-40EA-9169-CD6A30145576}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHaven.Tests", "..\GameHaven.Tests\GameHaven.Tests.csproj", "{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4854DBF-0EAB-40EA-9169-CD6A30145576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4854DBF-0EAB-40EA-9169-CD6A30145576}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4854DBF-0EAB-40EA-9169-CD6A30145576}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4854DBF-0EAB-40EA-9169-CD6A30145576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,12 +21,23 @@ namespace GameHavenMain.Data.Repositories
 
 		public async Task<UserDTO> GetLogin(UserDTO loginCredentials)
 		{
-			var hashedPassword = PasswordEncrypter.EncryptPassword(loginCredentials.Password);
+			try
+			{
+				var userSalt = await _context.User
+								.Where(u => u.Email == loginCredentials.Email)
+								.Select(u => u.Salt)
+								.FirstOrDefaultAsync();
 
-			return await _context.User
-				.Where(u => u.Email == loginCredentials.Email && u.Password == hashedPassword)
+				var hashedInput = PasswordEncrypter.EncryptPasswordWithGivenSalt(loginCredentials.Password, userSalt);		
+				
+				return await _context.User
+				.Where(u => u.Email == loginCredentials.Email && u.Password == hashedInput)
 				.FirstOrDefaultAsync();
-
+			}
+			catch
+			{
+				return null;
+			}
 		}
 
 
@@ -90,7 +101,6 @@ namespace GameHavenMain.Data.Repositories
 		public async Task<bool> CreateUser(UserDTO newUser)
 		{
 
-			//TODO add create function
 			var exists = await CheckEmailExists(newUser.Email);
 
 			if (exists)
