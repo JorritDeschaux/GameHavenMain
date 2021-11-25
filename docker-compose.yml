@@ -9,6 +9,18 @@ services:
     ports:
         - "5000:80"
 
+  gamehavenfront:
+    container_name: gamehavenfront
+    build:
+      context: ../gamehavenfront
+      dockerfile: ../gamehavenfront/Dockerfile
+    ports:
+      - 3000:3000
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+
   db:
     image: mysql:8.0
     container_name: db

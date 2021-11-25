@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHavenMain.Data", "GameH
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0EE2D240-2E1C-4821-A780-9CB6AC98A24D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHaven.Tests", "..\GameHaven.Tests\GameHaven.Tests.csproj", "{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHaven.Tests", "..\GameHaven.Tests\GameHaven.Tests.csproj", "{EFB9F06D-4E8E-4EDB-9937-514C05C414AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
