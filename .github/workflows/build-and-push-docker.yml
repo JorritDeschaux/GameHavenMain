@@ -2,22 +2,11 @@ name: GameHaven
 on:
   push:
     branches:
-      — '*'
-    tags:
-      — '*'
-  pull_request:
+      — 'master'
     
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    -
-      name: Checkout
-      uses: actions/checkout@v2
-      
+jobs:    
     
   publish_docker_images:
-    needs: build
     runs-on: ubuntu-latest
     if: GitHub.ref == 'refs/heads/master' || GitHub.event_name == 'release'
     steps:
