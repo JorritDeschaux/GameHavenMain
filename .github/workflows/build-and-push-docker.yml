@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+      
     
   publish_docker_images:
     needs: build
