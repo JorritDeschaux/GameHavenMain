@@ -47,6 +47,5 @@ jobs:
           file: ./GameHavenMain/Dockerfile
           pull: true
           push: true
-          tags: jorritdeschaux/gamehavenmain:latest
-          build-args: PROFILE=nectar,ARG2=test
+          tags: jorritdeschaux/gamehavenmain:main
           
