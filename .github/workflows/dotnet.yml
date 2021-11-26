@@ -45,7 +45,6 @@ jobs:
         with:
           context: .
           file: ./GameHavenMain/Dockerfile
-          pull: true
           push: true
           tags: jorritdeschaux/gamehavenmain:main
           
