@@ -14,7 +14,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
         
-    - name: Build with dotnet
+    - name: Install dependencies
+      run: dotnet restore ./GameHavenMain.sln
+        
+    - name: Build
       run: dotnet build GameHavenMain/GameHavenMain.csproj --configuration Release
       
     - name: Tests
