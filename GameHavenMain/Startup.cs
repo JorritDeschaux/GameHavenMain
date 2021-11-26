@@ -38,7 +38,7 @@ namespace GameHavenMain
 			services.AddScoped<IUserRepo, UserRepo>();
 			services.AddScoped<IGameRepo, GameRepo>();
 
-			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("AzureConnection")));
+			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{
