@@ -15,5 +15,8 @@ jobs:
         dotnet-version: 5.0.x
         
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build GameHavenMain/GameHavenMain.csproj --configuration Release
+      
+    - name: Tests
+      run: dotnet test ./GameHavenMain.sln --configuration Release
     
