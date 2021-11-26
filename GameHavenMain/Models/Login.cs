@@ -10,6 +10,7 @@ namespace GameHavenMain.Models
 
 		public string Mail { get; set; }
 
+		//Action Test
 		public string Password { get; set; }
 
 	}
