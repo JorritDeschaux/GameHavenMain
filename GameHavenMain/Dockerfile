@@ -11,7 +11,7 @@ COPY ["GameHavenMain/GameHavenMain.csproj", "GameHavenMain/"]
 COPY ["GameHavenMain.Data/GameHavenMain.Data.csproj", "GameHavenMain.Data/"]
 RUN dotnet restore "GameHavenMain/GameHavenMain.csproj"
 COPY . .
-RUN dotnet publish "GameHavenMain.csproj" -c Release -o /app/publish
+RUN dotnet publish "GameHavenMain/GameHavenMain.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
