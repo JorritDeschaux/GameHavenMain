@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Data.Repositories
 {
-	public class UserRepo : IUserRepo
+	public class UserRepo : GenericRepo<UserDTO>, IUserRepo
 	{
-		private readonly ApplicationDbContext _context;
-
-		public UserRepo(ApplicationDbContext context)
+		public UserRepo(ApplicationDbContext context) : base(context) 
 		{
-			_context = context;
+
 		}
 
 		public async Task<UserDTO> GetLogin(UserDTO loginCredentials)
@@ -40,79 +38,13 @@ namespace GameHavenMain.Data.Repositories
 			}
 		}
 
-
-		public async Task<UserDTO> GetUserById(int id)
+		public async Task<string> CheckEmailExists(string email)
 		{
-
 			return await _context.User
-				.Where(u => u.Id == id)
-				.FirstOrDefaultAsync();
-
-		}
-
-		public async Task<bool> CheckEmailExists(string email)
-		{
-			var user = await _context.User
 				.Where(u => u.Email == email)
+				.Select(u => u.Email)
 				.FirstOrDefaultAsync();
-
-			if (user != null)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-
 		}
 
-
-		public async Task<bool> DeleteUser(int id)
-		{
-
-			var user = await GetUserById(id);
-			_context.Remove(user);
-			_context.SaveChanges();
-
-			if (user != null)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-
-		}
-
-
-		public async Task<UserDTO> UpdateUser(UserDTO updatedUser)
-		{
-
-			_context.Update(updatedUser.Id);
-			_context.SaveChanges();
-
-			return await GetUserById(updatedUser.Id);
-
-		}
-
-
-		public async Task<bool> CreateUser(UserDTO newUser)
-		{
-
-			var exists = await CheckEmailExists(newUser.Email);
-
-			if (exists)
-			{
-				return false;
-			}
-
-			_context.Add(newUser);
-			_context.SaveChanges();
-
-			return true;
-
-		}
 	}
 }

@@ -1,4 +1,5 @@
 using GameHavenMain.Data;
+using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Data.Repositories;

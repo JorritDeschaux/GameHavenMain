@@ -2,7 +2,7 @@ using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GameHaven.Tests
+namespace GameHavenMain.Tests
 {
 	[TestClass]
 	public class TestEncryption

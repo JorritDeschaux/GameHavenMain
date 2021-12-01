@@ -19,11 +19,11 @@ namespace GameHavenMain.Controllers
     [ApiController]
     public class AuthController : Controller
 	{
-		private readonly IUserRepo _repo;
+        private IUserRepo _userRepo;
 
-		public AuthController(IUserRepo repo)
+        public AuthController(IUserRepo userRepo)
 		{
-            _repo = repo;
+            _userRepo = userRepo;
 		}
 
 
@@ -36,12 +36,24 @@ namespace GameHavenMain.Controllers
             if (jwt == "null")
                 return Ok();
 
-            var token = TokenHelper.Verify(jwt);
+            var validatedToken = TokenHelper.Verify(jwt);
 
-            int id = Convert.ToInt32(token.Payload["nameid"].ToString());
-            var user = await _repo.GetUserById(id);
+            int id = Convert.ToInt32(validatedToken.Payload["nameid"].ToString());
+            var user = await _userRepo.GetById(id);
 
-            return Ok(user);
+            UserInfo userInfo = new UserInfo
+            {
+                Email = user.Email,
+                Birthday = user.Birthday,
+                RegisterDate = user.RegisterDate,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Username = user.Username
+            };
+
+            return Ok(userInfo);
 
         }
 
@@ -56,7 +68,7 @@ namespace GameHavenMain.Controllers
                 Password = credentials.Password
             };
 
-            var user = await _repo.GetLogin(loginInfo);
+            var user = await _userRepo.GetLogin(loginInfo);
                     
             if (user != null)
             {
@@ -103,34 +115,34 @@ namespace GameHavenMain.Controllers
             };
 
             newUser = PasswordEncrypter.EncryptUserPassword(newUser, credentials.Password);
-
-            var success = await _repo.CreateUser(newUser);
-
-            if (success)
+         
+            try
             {
+                await _userRepo.Create(newUser);
                 return Ok();
             }
-			else
+			catch(Exception e)
 			{
-                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database!");
+                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database! Error Code:" + e);
             }
+
 		}
 
-        
-        [Authorize]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
 		{
-            var success = await _repo.DeleteUser(id);
 
-            if (success)
+            try
             {
+                await _userRepo.Delete(id);
                 return Ok();
             }
-            else
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database!");
+                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database! Error Code: " + e);
+            
             }
+
         }
 	}
 }

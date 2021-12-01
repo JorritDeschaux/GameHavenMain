@@ -54,5 +54,7 @@ namespace GameHavenMain.Data.HelperClasses
 			return (JwtSecurityToken)validatedToken;
 		}
 
+
+
 	}
 }
