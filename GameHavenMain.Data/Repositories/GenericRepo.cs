@@ -31,11 +31,6 @@ namespace GameHavenMain.Data.Repositories
 			return await _table.FindAsync(id);
 		}
 
-		public async Task<TEntity> GetByName(object name)
-		{
-			return await _table.FindAsync(name);
-		}
-
 		public async Task Create(TEntity obj)
 		{
 			await _table.AddAsync(obj);

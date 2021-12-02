@@ -11,7 +11,6 @@ namespace GameHavenMain.Data.Interfaces
 
 		Task<IEnumerable<TEntity>> GetAll();
 		Task<TEntity> GetById(object id);
-		Task<TEntity> GetByName(object name);
 		Task Create(TEntity obj);
 		Task Update(TEntity obj);
 		Task Delete(object id);

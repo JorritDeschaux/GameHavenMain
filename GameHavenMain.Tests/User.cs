@@ -10,7 +10,7 @@ namespace GameHavenMain.Tests
 {
 
 	[TestClass]
-	public class UserRepoTests
+	public class User
 	{
 
         IUserRepo userRepo;
@@ -50,13 +50,40 @@ namespace GameHavenMain.Tests
         [TestMethod]
         public void User_Add_TrueExistsById()
         {
+            UserDTO user = CreateTestUser();
+            userRepo.Create(user);
+
+            Assert.IsNotNull(userRepo.GetById(user.Id).Result);
+        }
+
+        [TestMethod]
+        public void User_Update_TrueInfoUpdated()
+        {
+            UserDTO user = CreateTestUser();
+            userRepo.Create(user);
+
+            Assert.IsTrue(userRepo.GetById(user.Id).Result.Username == user.Username);
+
+            string updatedUsername = "updated";
+            user.Username = updatedUsername;
+            userRepo.Update(user);
+
+            Assert.IsTrue(userRepo.GetById(user.Id).Result.Username == updatedUsername);
+        }
+
+
+        [TestMethod]
+        public void User_Delete_TrueDeletedFromDatabase()
+        {
 
             UserDTO user = CreateTestUser();
-
             userRepo.Create(user);
-            context.SaveChanges();
 
-            Assert.IsTrue(userRepo.GetById(user.Id).Result != null);
+            Assert.IsNotNull(userRepo.GetById(user.Id).Result);
+
+            userRepo.Delete(user.Id);
+
+            Assert.IsNull(userRepo.GetById(user.Id).Result);
         }
     }
 }

@@ -1,12 +1,20 @@
+using GameHavenMain.Data;
 using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
+using GameHavenMain.Data.Interfaces;
+using GameHavenMain.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace GameHavenMain.Tests
 {
 	[TestClass]
-	public class TestEncryption
+	public class Encryption
 	{
+
+		IUserRepo userRepo;
+		ApplicationDbContext context;
 
 		private UserDTO CreateTestUser()
 		{
@@ -26,8 +34,37 @@ namespace GameHavenMain.Tests
 			return user;
 		}
 
+		[TestInitialize]
+		public void TestInit()
+		{
+			var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+			.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+			.Options;
+
+			context = new ApplicationDbContext(options);
+
+			userRepo = new UserRepo(context);
+		}
+
+
 		[TestMethod]
-		public void Check_If_Encryption_Works_With_User_Salts()
+		public void Encryption_Create_PassGetsEncryptedAndExistsInDB()
+		{
+			var password = "test1234";
+
+			UserDTO user = CreateTestUser();
+
+			user = PasswordEncrypter.EncryptUserPassword(user, password);
+			userRepo.Create(user);
+
+			Assert.IsNotNull(userRepo.GetById(user.Id).Result.Password);
+			Assert.IsNotNull(userRepo.GetById(user.Id).Result.Salt);
+
+		}
+
+
+		[TestMethod]
+		public void Encryption_Create_SaltsAreUniqueToUser()
 		{
 			var password = "test1234";
 
