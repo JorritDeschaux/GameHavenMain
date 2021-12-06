@@ -20,9 +20,10 @@ namespace GameHavenMain.Data.Repositories
 		}
 
 
-		public async Task<IEnumerable<GameDTO>> GameById(int id)
+		public async Task<GameDTO> GameById(int id)
 		{
-			return await igdb.QueryAsync<GameDTO>(IGDBClient.Endpoints.Games, query: $"fields id,name,summary,rating,cover.*; w id = {id};");
+			var result = await igdb.QueryAsync<GameDTO>(IGDBClient.Endpoints.Games, query: $"fields id,name,summary,rating,cover.*; w id = {id};");
+			return result[0];
 		}
 
 
