@@ -15,6 +15,12 @@ namespace GameHavenMain.Data.HelperClasses
 
 		IConfiguration _config;
 
+		public TokenHelper(string secretKey)
+		{
+			SECRET_KEY = secretKey;
+			SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+		}
+
 		public TokenHelper(IConfiguration config)
 		{
 			_config = config;
@@ -22,16 +28,19 @@ namespace GameHavenMain.Data.HelperClasses
 			SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 		}
 
-		public JwtSecurityToken CreateToken(Claim[] claims)
+		public JwtSecurityToken CreateToken(Claim[] claims, DateTime? expirationDate = null)
 		{
 			var mySecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 
 			var tokenHandler = new JwtSecurityTokenHandler();
 
+			if (expirationDate == null)
+				expirationDate = DateTime.UtcNow.AddDays(30);
+
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTime.UtcNow.AddDays(30),
+				Expires = expirationDate,
 				SigningCredentials = new SigningCredentials(mySecurityKey, SecurityAlgorithms.HmacSha256Signature)
 			};
 
