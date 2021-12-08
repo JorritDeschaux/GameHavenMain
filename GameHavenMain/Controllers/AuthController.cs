@@ -17,13 +17,15 @@ namespace GameHavenMain.Controllers
 	[ApiVersion("1")]
     [ApiVersion("2")]
     [ApiController]
-    public class AuthController : Controller
-	{
+    public class AuthController : ControllerBase
+    {
         private IUserRepo _userRepo;
+		private TokenHelper _tokenHelper;
 
-        public AuthController(IUserRepo userRepo)
+		public AuthController(IUserRepo userRepo, TokenHelper tokenHelper)
 		{
             _userRepo = userRepo;
+            _tokenHelper = tokenHelper;
 		}
 
 
@@ -33,13 +35,12 @@ namespace GameHavenMain.Controllers
 
             var jwt = Request.Headers["Authorization"];
 
-            if (jwt == "null")
-                return Ok();
+            UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
 
-            var validatedToken = TokenHelper.Verify(jwt);
-
-            int id = Convert.ToInt32(validatedToken.Payload["nameid"].ToString());
-            var user = await _userRepo.GetById(id);
+            if(user == null)
+			{
+                return Unauthorized("Token is either invalid or expired");
+			}                
 
             UserInfo userInfo = new UserInfo
             {
@@ -64,11 +65,11 @@ namespace GameHavenMain.Controllers
 
             UserDTO loginInfo = new UserDTO
             {
-                Email = credentials.Mail,
+                Email = credentials.Email,
                 Password = credentials.Password
             };
 
-            var user = await _userRepo.GetLogin(loginInfo);
+            var user = await _userRepo.GetLoginAsync(loginInfo);
                     
             if (user != null)
             {
@@ -82,9 +83,9 @@ namespace GameHavenMain.Controllers
                     new Claim("username", user.Username)
                 };
 
-                var token = TokenHelper.CreateToken(claims);
+                var token = _tokenHelper.CreateToken(claims);
 
-                return Ok(TokenHelper.WriteToken(token));
+                return Ok(_tokenHelper.WriteToken(token));
             }
             else
             {
@@ -118,7 +119,7 @@ namespace GameHavenMain.Controllers
          
             try
             {
-                await _userRepo.Create(newUser);
+                await _userRepo.CreateAsync(newUser);
                 return Ok();
             }
 			catch(Exception e)
@@ -134,7 +135,7 @@ namespace GameHavenMain.Controllers
 
             try
             {
-                await _userRepo.Delete(id);
+                await _userRepo.DeleteAsync(id);
                 return Ok();
             }
             catch (Exception e)

@@ -7,8 +7,10 @@ using GameHavenMain.Data.Interfaces;
 namespace GameHavenMain.Controllers
 {
 	[Route("api/games")]
+	[ApiVersion("1")]
+	[ApiVersion("2")]
 	[ApiController]
-	public class GamesController : Controller
+	public class GamesController : ControllerBase
 	{
 		private readonly IGameRepo _repo;
 

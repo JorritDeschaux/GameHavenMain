@@ -1,4 +1,5 @@
 ﻿using GameHavenMain.Data.DTO;
+using GameHavenMain.Data.HelperClasses;
 using System.Threading.Tasks;
 
 namespace GameHavenMain.Data.Interfaces
@@ -6,9 +7,11 @@ namespace GameHavenMain.Data.Interfaces
 	public interface IUserRepo : IGenericRepo<UserDTO>
 	{
 
-		Task<UserDTO> GetLogin(UserDTO loginCredentials);
+		Task<UserDTO> GetLoginAsync(UserDTO loginCredentials);
 
-		Task<string> CheckEmailExists(string email);
+		Task<string> CheckEmailExistsAsync(string email);
+
+		Task<UserDTO> GetUserWithTokenAsync(string jwt, TokenHelper _tokenHelper);
 
 	}
 }

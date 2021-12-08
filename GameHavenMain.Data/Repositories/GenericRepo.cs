@@ -21,39 +21,39 @@ namespace GameHavenMain.Data.Repositories
 		}
 
 
-		public async Task<IEnumerable<TEntity>> GetAll()
+		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
 			return await _table.ToListAsync();
 		}
 
-		public async Task<TEntity> GetById(object id)
+		public async Task<TEntity> GetByIdAsync(object id)
 		{
 			return await _table.FindAsync(id);
 		}
 
-		public async Task Create(TEntity obj)
+		public async Task CreateAsync(TEntity obj)
 		{
 			await _table.AddAsync(obj);
 
-			await Save();
+			await SaveAsync();
 		}
 
-		public async Task Update(TEntity obj)
+		public async Task UpdateAsync(TEntity obj)
 		{
 			_table.Update(obj);
 
-			await Save();
+			await SaveAsync();
 		}
 
-		public async Task Delete(object id)
+		public async Task DeleteAsync(object id)
 		{
 			TEntity existing = await _table.FindAsync(id);
 			_table.Remove(existing);
 
-			await Save();
+			await SaveAsync();
 		}
 
-		public async Task Save()
+		public async Task SaveAsync()
 		{
 			await _context.SaveChangesAsync();
 		}

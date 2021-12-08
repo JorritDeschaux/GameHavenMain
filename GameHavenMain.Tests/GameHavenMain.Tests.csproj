@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameHavenMain.Data\GameHavenMain.Data.csproj" />
+    <ProjectReference Include="..\GameHavenMain\GameHavenMain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,9 +8,8 @@ namespace GameHavenMain.Models
 	public class Login
 	{
 
-		public string Mail { get; set; }
+		public string Email { get; set; }
 
-		//Action Test
 		public string Password { get; set; }
 
 	}

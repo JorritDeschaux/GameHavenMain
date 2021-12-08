@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	public class AboutController : Controller
+
+	[Route("api/about")]
+	[ApiVersion("1")]
+	[ApiVersion("2")]
+	[ApiController]
+	public class AboutController : ControllerBase
 	{
-		public IActionResult Index()
+
+		[HttpGet]
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			return Ok();
 		}
+
 	}
+
 }

@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace GameHavenMain
 {
@@ -34,10 +36,13 @@ namespace GameHavenMain
 				o.AssumeDefaultVersionWhenUnspecified = true;
 				o.DefaultApiVersion = new ApiVersion(1, 0);
 				o.ReportApiVersions = true;
+				o.ApiVersionReader = new HeaderApiVersionReader("Version");
 			});
 
 			services.AddScoped<IUserRepo, UserRepo>();
 			services.AddScoped<IGameRepo, GameRepo>();
+
+			services.AddTransient<TokenHelper>();
 
 			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -62,7 +67,7 @@ namespace GameHavenMain
 				jwtOptions.TokenValidationParameters = new TokenValidationParameters()
 				{
 					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = TokenHelper.SIGNING_KEY,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Secret"])),
 					ValidateIssuer = false,
 					ValidateAudience = false
 				};
@@ -72,6 +77,7 @@ namespace GameHavenMain
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "GameHavenMain", Version = "v1" });
+				c.SwaggerDoc("v2", new OpenApiInfo { Title = "GameHavenMain", Version = "v2" });
 			});
 		}
 

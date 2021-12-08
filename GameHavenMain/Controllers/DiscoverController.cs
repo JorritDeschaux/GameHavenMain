@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 namespace GameHavenMain.Controllers
 {
 	[Route("api/discover")]
+	[ApiVersion("1")]
+	[ApiVersion("2")]
 	[ApiController]
-	public class DiscoverController : Controller
+	public class DiscoverController : ControllerBase
 	{
 
 		private readonly IGameRepo _repo;

@@ -17,7 +17,7 @@ namespace GameHavenMain.Data.Repositories
 
 		}
 
-		public async Task<UserDTO> GetLogin(UserDTO loginCredentials)
+		public async Task<UserDTO> GetLoginAsync(UserDTO loginCredentials)
 		{
 			try
 			{
@@ -38,12 +38,32 @@ namespace GameHavenMain.Data.Repositories
 			}
 		}
 
-		public async Task<string> CheckEmailExists(string email)
+		public async Task<string> CheckEmailExistsAsync(string email)
 		{
 			return await _context.User
 				.Where(u => u.Email == email)
 				.Select(u => u.Email)
 				.FirstOrDefaultAsync();
+		}
+
+		public async Task<UserDTO> GetUserWithTokenAsync(string jwt, TokenHelper _tokenHelper)
+		{
+			try
+			{
+				var validatedToken = _tokenHelper.Validate(jwt);
+
+				int id = Convert.ToInt32(validatedToken.Payload["nameid"].ToString());
+
+				if (_tokenHelper.IsExpired(validatedToken))
+					return null;
+
+				return await GetByIdAsync(id);
+			}
+			catch
+			{
+				return null;
+			}
+
 		}
 
 	}

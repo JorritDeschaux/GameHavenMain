@@ -9,12 +9,17 @@ namespace GameHavenMain.Data.Interfaces
 	public interface IGenericRepo<TEntity> where TEntity : class
 	{
 
-		Task<IEnumerable<TEntity>> GetAll();
-		Task<TEntity> GetById(object id);
-		Task Create(TEntity obj);
-		Task Update(TEntity obj);
-		Task Delete(object id);
-		Task Save();
+		Task<IEnumerable<TEntity>> GetAllAsync();
+
+		Task<TEntity> GetByIdAsync(object id);
+
+		Task CreateAsync(TEntity obj);
+
+		Task UpdateAsync(TEntity obj);
+
+		Task DeleteAsync(object id);
+
+		Task SaveAsync();
 
 	}
 }

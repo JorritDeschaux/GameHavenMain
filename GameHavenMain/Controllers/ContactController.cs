@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	public class ContactController : Controller
+	[Route("api/contact")]
+	[ApiVersion("1")]
+	[ApiVersion("2")]
+	[ApiController]
+	public class ContactController : ControllerBase
 	{
-		public IActionResult Index()
+
+		[HttpGet]
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			return Ok();
 		}
 	}
 }

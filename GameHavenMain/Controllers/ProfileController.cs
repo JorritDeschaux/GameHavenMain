@@ -1,4 +1,5 @@
 ﻿
+using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
@@ -20,11 +21,14 @@ namespace GameHavenMain.Controllers
 	{
 
 		private IUserRepo _userRepo;
+		private TokenHelper _tokenHelper;
 
-		public ProfileController(IUserRepo userRepo)
+		public ProfileController(IUserRepo userRepo, TokenHelper tokenHelper)
 		{
 			_userRepo = userRepo;
+			_tokenHelper = tokenHelper;
 		}
+
 
 		[HttpGet("updateInfo")]
 		public async Task<IActionResult> UpdateUserInfo()
@@ -32,13 +36,12 @@ namespace GameHavenMain.Controllers
 			try
 			{
 				var jwt = Request.Headers["Authorization"];
-				TokenHelper.Verify(jwt);
+				UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
 
-				var validatedToken = TokenHelper.Verify(jwt);
-
-				int id = Convert.ToInt32(validatedToken.Payload["nameid"].ToString());
-
-				var user = await _userRepo.GetById(id);
+				if (user == null)
+				{
+					return Unauthorized("Token is either invalid or expired");
+				}
 
 				UserInfo userInfo = new UserInfo
 				{
@@ -69,13 +72,12 @@ namespace GameHavenMain.Controllers
 			try
 			{
 				var jwt = Request.Headers["Authorization"];
-				TokenHelper.Verify(jwt);
+				UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
 
-				var validatedToken = TokenHelper.Verify(jwt);
-
-				int id = Convert.ToInt32(validatedToken.Payload["nameid"].ToString());
-
-				var user = await _userRepo.GetById(id);
+				if (user == null)
+				{
+					return Unauthorized("Token is either invalid or expired");
+				}
 
 				user.Birthday = updatedUser.Birthday;
 				user.FirstName = updatedUser.FirstName;
@@ -83,7 +85,7 @@ namespace GameHavenMain.Controllers
 				user.LastName = updatedUser.LastName;
 				user.Phone = updatedUser.Phone;
 
-				await _userRepo.Update(user);
+				await _userRepo.UpdateAsync(user);
 
 				return Ok();
 

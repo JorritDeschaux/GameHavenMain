@@ -55,10 +55,10 @@ namespace GameHavenMain.Tests
 			UserDTO user = CreateTestUser();
 
 			user = PasswordEncrypter.EncryptUserPassword(user, password);
-			userRepo.Create(user);
+			userRepo.CreateAsync(user);
 
-			Assert.IsNotNull(userRepo.GetById(user.Id).Result.Password);
-			Assert.IsNotNull(userRepo.GetById(user.Id).Result.Salt);
+			Assert.IsNotNull(userRepo.GetByIdAsync(user.Id).Result.Password);
+			Assert.IsNotNull(userRepo.GetByIdAsync(user.Id).Result.Salt);
 
 		}
 
