@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameHavenMain.Data.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,25 @@ namespace GameHavenMain.Models
 {
 	public class UserInfo
 	{
+		public UserInfo()
+		{
+
+		}
+
+		public UserInfo(UserDTO user)
+		{
+			Id = user.Id;
+			Email = user.Email;
+			Username = user.Username;
+			FirstName = user.FirstName;
+			MiddleName = user.MiddleName;
+			LastName = user.LastName;
+			Birthday = user.Birthday;
+			Phone = user.Phone;
+			RegisterDate = user.RegisterDate;
+		}
+
+		public int Id { get; set; }
 
 		public string Email { get; set; }
 

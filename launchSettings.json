@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "serviceActions": {
+        "db": "StartWithoutDebugging",
+        "gamehavenfront": "StartWithoutDebugging",
+        "gamehavenmain": "StartDebugging",
+        "pma": "StartWithoutDebugging"
+      },
+      "commandVersion": "1.0"
+    }
+  }
+}

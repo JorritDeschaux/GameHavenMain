@@ -82,7 +82,7 @@ namespace GameHavenMain.Tests
                };
 
             //JWT expires in 30 days normally, expiration can't be UtcNow
-            var token = tokenHelper.CreateToken(claims, DateTime.UtcNow.AddSeconds(0.01));
+            var token = tokenHelper.CreateToken(claims, DateTime.UtcNow.AddSeconds(0.1));
 
             //Token should be expired so IsExpired returns true
             Assert.IsNotNull(token);
@@ -98,10 +98,10 @@ namespace GameHavenMain.Tests
         }
 
         [TestMethod]
-        public void Token_Get_UserUsingToken()
+        public async void Token_Get_UserUsingToken()
         {
             UserDTO user = TestHelper.CreateTestUser();
-            userRepo.CreateAsync(user);
+            await userRepo.CreateAsync(user);
 
             Claim[] claims = new Claim[]
                {
@@ -116,9 +116,36 @@ namespace GameHavenMain.Tests
             var token = tokenHelper.CreateToken(claims);
 
             //This operation also checks for expiration of the token, if it is expired it will return null
-            UserDTO userGet = userRepo.GetUserWithTokenAsync(tokenHelper.WriteToken(token), tokenHelper).Result;
+            UserDTO userGet = await userRepo.GetUserWithTokenAsync(tokenHelper.WriteToken(token), tokenHelper);
 
             Assert.IsNotNull(userGet);
         }
+
+        [TestMethod]
+        public async void Token_Authorize()
+        {
+            UserDTO user = TestHelper.CreateTestUser();
+            await userRepo.CreateAsync(user);
+
+            Claim[] claims = new Claim[]
+               {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim("firstname", user.FirstName),
+                    new Claim("middlename", user.MiddleName),
+                    new Claim(ClaimTypes.Surname, user.LastName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("username", user.Username)
+               };
+
+            var token = tokenHelper.CreateToken(claims);
+            Assert.IsNotNull(token);
+
+            var validatedToken = tokenHelper.Validate(tokenHelper.WriteToken(token));
+            int userIdToDelete = user.Id;
+
+            //Authorized checks if the id of the validatedToken is the same as the desired userId to delete etc.
+            Assert.IsTrue(tokenHelper.Authorized(validatedToken, userIdToDelete));
+        }
+
     }
 }

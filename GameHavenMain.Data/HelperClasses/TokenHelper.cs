@@ -60,11 +60,10 @@ namespace GameHavenMain.Data.HelperClasses
 		public JwtSecurityToken Validate(string jwt)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.UTF8.GetBytes(SECRET_KEY);
 
 			tokenHandler.ValidateToken(jwt, new TokenValidationParameters
 			{
-				IssuerSigningKey = new SymmetricSecurityKey(key),
+				IssuerSigningKey = SIGNING_KEY,
 				ValidateIssuerSigningKey = true,
 				ValidateIssuer = false,
 				ValidateAudience = false
@@ -74,12 +73,17 @@ namespace GameHavenMain.Data.HelperClasses
 			return (JwtSecurityToken)validatedToken;
 		}
 
-		public bool IsExpired(SecurityToken validatedToken)
+		public bool IsExpired(JwtSecurityToken validatedToken)
 		{
 			if(DateTime.UtcNow > validatedToken.ValidTo)
 				return true;
 
 			return false;
+		}
+
+		public bool Authorized(JwtSecurityToken validatedToken, int id)
+		{
+			return validatedToken.Payload["nameid"].ToString() == Convert.ToString(id) ? true : false;
 		}
 
 	}

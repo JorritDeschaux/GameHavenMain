@@ -14,7 +14,7 @@ namespace GameHavenMain.Controllers
 	{
 
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public IActionResult Index()
 		{
 			return Ok();
 		}

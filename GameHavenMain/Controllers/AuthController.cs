@@ -29,33 +29,20 @@ namespace GameHavenMain.Controllers
 		}
 
 
-        [HttpGet("verify")]
-        public async Task<IActionResult> Verify()
+        [HttpGet("userByToken")]
+        public async Task<IActionResult> UserByToken()
         {
-
             var jwt = Request.Headers["Authorization"];
+            UserDTO user = await _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper);
+            return user != null ? Ok(new UserInfo(user)) : Unauthorized("Token is either invalid or expired");
+        }
 
-            UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
-
-            if(user == null)
-			{
-                return Unauthorized("Token is either invalid or expired");
-			}                
-
-            UserInfo userInfo = new UserInfo
-            {
-                Email = user.Email,
-                Birthday = user.Birthday,
-                RegisterDate = user.RegisterDate,
-                FirstName = user.FirstName,
-                MiddleName = user.MiddleName,
-                LastName = user.LastName,
-                Phone = user.Phone,
-                Username = user.Username
-            };
-
-            return Ok(userInfo);
-
+        [HttpGet("userIdByToken")]
+        public async Task<IActionResult> UserIdByToken()
+        {
+            var jwt = Request.Headers["Authorization"];
+            UserDTO user = await _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper);
+            return user != null ? Ok(user.Id) : Unauthorized("Token is either invalid or expired");
         }
 
 
@@ -89,7 +76,7 @@ namespace GameHavenMain.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "No user exists with the given credentials!");
+                return BadRequest("No user exists with the given credentials!");
             }
 
         }
@@ -103,18 +90,7 @@ namespace GameHavenMain.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            UserDTO newUser = new()
-            {
-                Birthday = credentials.Birthday,
-                RegisterDate = DateTime.Now,
-                Email = credentials.Email,
-                FirstName = credentials.FirstName,
-                MiddleName = credentials.MiddleName,
-                LastName = credentials.LastName,
-                Phone = credentials.Phone,
-                Username = credentials.Username,
-            };
-
+            UserDTO newUser = new(credentials);
             newUser = PasswordEncrypter.EncryptUserPassword(newUser, credentials.Password);
          
             try
@@ -124,7 +100,7 @@ namespace GameHavenMain.Controllers
             }
 			catch(Exception e)
 			{
-                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database! Error Code:" + e);
+                return BadRequest("Email already exists in database! Error Code:" + e);
             }
 
 		}
@@ -132,6 +108,11 @@ namespace GameHavenMain.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
 		{
+            string jwt = Request.Headers["Authorization"];
+            if(jwt == null) { return Unauthorized(); }
+
+            var result = _tokenHelper.Validate(jwt);
+            if(!_tokenHelper.Authorized(result, id)) { return Unauthorized(); }
 
             try
             {
@@ -140,7 +121,7 @@ namespace GameHavenMain.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, "Email already exists in database! Error Code: " + e);
+                return StatusCode(StatusCodes.Status400BadRequest, e);
             
             }
 

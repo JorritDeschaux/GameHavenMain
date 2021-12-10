@@ -44,7 +44,8 @@ namespace GameHavenMain
 
 			services.AddTransient<TokenHelper>();
 
-			services.AddDbContext<ApplicationDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<ApplicationDbContext>(options =>
+				options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddCors(options =>
 			{

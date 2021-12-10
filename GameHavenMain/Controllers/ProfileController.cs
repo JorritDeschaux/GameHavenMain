@@ -36,24 +36,14 @@ namespace GameHavenMain.Controllers
 			try
 			{
 				var jwt = Request.Headers["Authorization"];
-				UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
+				UserDTO user = await _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper);
 
 				if (user == null)
 				{
 					return Unauthorized("Token is either invalid or expired");
 				}
 
-				UserInfo userInfo = new UserInfo
-				{
-					Email = user.Email,
-					Birthday = user.Birthday,
-					RegisterDate = user.RegisterDate,
-					FirstName = user.FirstName,
-					MiddleName = user.MiddleName,
-					LastName = user.LastName,
-					Phone = user.Phone,
-					Username = user.Username
-				};
+				UserInfo userInfo = new UserInfo(user);
 
 				return Ok(userInfo);
 
@@ -72,7 +62,7 @@ namespace GameHavenMain.Controllers
 			try
 			{
 				var jwt = Request.Headers["Authorization"];
-				UserDTO user = _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper).Result;
+				UserDTO user = await _userRepo.GetUserWithTokenAsync(jwt, _tokenHelper);
 
 				if (user == null)
 				{

@@ -5,6 +5,22 @@ namespace GameHavenMain.Data.DTO
 {
 	public class UserDTO
 	{
+		public UserDTO()
+		{
+
+		}
+
+		public UserDTO(dynamic credentials)
+		{
+			Birthday = credentials.Birthday;
+			RegisterDate = DateTime.Now;
+			Email = credentials.Email;
+			FirstName = credentials.FirstName;
+			MiddleName = credentials.MiddleName;
+			LastName = credentials.LastName;
+			Phone = credentials.Phone;
+			Username = credentials.Username;
+		}
 
 		[Key]
 		public int Id { get; set; }
