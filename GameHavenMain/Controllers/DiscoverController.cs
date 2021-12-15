@@ -28,17 +28,8 @@ namespace GameHavenMain.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-
 			var games = await _repo.GamesNew();
-
-			if(games != null)
-			{
-				return Ok(games);
-			}
-			else
-			{
-				return BadRequest("No games found!");
-			}
+			return games != null ? Ok(games) : BadRequest("No games found!");
 		}
 	}
 }

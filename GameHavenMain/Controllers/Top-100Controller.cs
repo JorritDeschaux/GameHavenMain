@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GameHavenMain.Data.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,18 @@ namespace GameHavenMain.Controllers
 	public class Top_100Controller : ControllerBase
 	{
 
-		[HttpGet]
-		public IActionResult Index()
+		private readonly IGameRepo _repo;
+
+		public Top_100Controller(IGameRepo repo)
 		{
-			return Ok();
+			_repo = repo;
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetTop100()
+		{
+			var games = await _repo.Top100();
+			return games != null ? Ok(games) : BadRequest();
 		}
 
 	}

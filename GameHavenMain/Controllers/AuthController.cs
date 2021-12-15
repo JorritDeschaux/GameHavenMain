@@ -74,11 +74,14 @@ namespace GameHavenMain.Controllers
 
                 return Ok(_tokenHelper.WriteToken(token));
             }
+            else if(await _userRepo.CheckEmailExistsAsync(loginInfo.Email) != null)
+			{
+                return BadRequest("Wrong password!");
+			}
             else
             {
                 return BadRequest("No user exists with the given credentials!");
             }
-
         }
 
 
@@ -109,10 +112,10 @@ namespace GameHavenMain.Controllers
         public async Task<IActionResult> Delete(int id)
 		{
             string jwt = Request.Headers["Authorization"];
-            if(jwt == null) { return Unauthorized(); }
+            if(jwt == null) { return Forbid(); }
 
             var result = _tokenHelper.Validate(jwt);
-            if(!_tokenHelper.Authorized(result, id)) { return Unauthorized(); }
+            if(!_tokenHelper.Authorized(result, id)) { return Forbid(); }
 
             try
             {

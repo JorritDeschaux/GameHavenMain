@@ -4,7 +4,6 @@
       "commandName": "DockerCompose",
       "serviceActions": {
         "db": "StartWithoutDebugging",
-        "gamehavenfront": "StartWithoutDebugging",
         "gamehavenmain": "StartDebugging",
         "pma": "StartWithoutDebugging"
       },

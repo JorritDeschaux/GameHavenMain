@@ -41,5 +41,13 @@ namespace GameHavenMain.Data.Repositories
 																						$"l 50; ");
 		}
 
+		public async Task<IEnumerable<GameDTO>> Top100()
+		{
+			return await igdb.QueryAsync<GameDTO>(IGDBClient.Endpoints.Games, query: $"f id,name,rating,cover.*; " +
+																						$"s total_rating desc; " +
+																						$"w total_rating != 0" +
+																						$"l 100; ");
+		}
+
 	}
 }

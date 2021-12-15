@@ -16,5 +16,7 @@ namespace GameHavenMain.Data.Interfaces
 
 		public Task<IEnumerable<GameDTO>> GamesNew();
 
+		public Task<IEnumerable<GameDTO>> Top100();
+
 	}
 }
