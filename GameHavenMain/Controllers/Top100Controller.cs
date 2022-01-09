@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace GameHavenMain.Controllers
 {
-	[Route("api/top-100")]
+	[Route("api/top100")]
 	[ApiVersion("1")]
 	[ApiVersion("2")]
 	[ApiController]
-	public class Top_100Controller : ControllerBase
+	public class Top100Controller : ControllerBase
 	{
 
 		private readonly IGameRepo _repo;
 
-		public Top_100Controller(IGameRepo repo)
+		public Top100Controller(IGameRepo repo)
 		{
 			_repo = repo;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetTop100()
+		public async Task<IActionResult> Index()
 		{
 			var games = await _repo.Top100();
 			return games != null ? Ok(games) : BadRequest();

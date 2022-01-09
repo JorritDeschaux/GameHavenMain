@@ -25,7 +25,11 @@ namespace GameHavenMain.Data.DTO
 
 		public int Follows { get; set; }
 
+		//Average user rating
 		public double Rating { get; set; }
+
+		//Average of all user ratings and external critic scores
+		public double Total_Rating { get; set; }
 
 		public int Rating_Count { get; set; }
 
