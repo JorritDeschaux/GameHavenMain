@@ -30,7 +30,6 @@ namespace GameHavenMain.Models
 		[Required]
 		public string LastName { get; set; }
 
-		[Required]
 		[DataType(DataType.Date)]
 		public DateTime Birthday { get; set; }
 

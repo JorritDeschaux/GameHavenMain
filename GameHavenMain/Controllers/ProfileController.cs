@@ -69,11 +69,11 @@ namespace GameHavenMain.Controllers
 					return Unauthorized("Token is either invalid or expired");
 				}
 
-				user.Birthday = updatedUser.Birthday;
-				user.FirstName = updatedUser.FirstName;
-				user.MiddleName = updatedUser.MiddleName;
-				user.LastName = updatedUser.LastName;
-				user.Phone = updatedUser.Phone;
+				if(updatedUser.Birthday != new DateTime(1, 1, 1)) { user.Birthday = updatedUser.Birthday; }
+				if(updatedUser.FirstName != null) { user.FirstName = updatedUser.FirstName; }
+				if(updatedUser.MiddleName != null) { user.MiddleName = updatedUser.MiddleName; }
+				if(updatedUser.LastName != null) { user.LastName = updatedUser.LastName; }	
+				if(updatedUser.Phone != null) { user.Phone = updatedUser.Phone;}
 
 				await _userRepo.UpdateAsync(user);
 
