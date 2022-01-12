@@ -3,6 +3,7 @@ using GameHavenMain.Data.DTO;
 using GameHavenMain.Data.HelperClasses;
 using GameHavenMain.Data.Interfaces;
 using GameHavenMain.Models;
+using GameHavenMain.Models.Output;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,6 +30,19 @@ namespace GameHavenMain.Controllers
 			_tokenHelper = tokenHelper;
 		}
 
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetPublicUserInfo(int id)
+        {
+			UserDTO user = await _userRepo.GetByIdAsync(id);
+
+			if(user == null)
+            {
+				return NotFound();
+            }
+
+			PublicInfo publicInfo = new PublicInfo(user);
+			return Ok(publicInfo);
+        }
 
 		[HttpGet("updateInfo")]
 		public async Task<IActionResult> UpdateUserInfo()
