@@ -10,12 +10,10 @@ namespace GameHavenMain.Data.Repositories
 	public class GameRepo : IGameRepo
 	{
 
-		private readonly ApplicationDbContext _context;
-		private IGDBClient igdb;
+		private readonly IGDBClient igdb;
 
 		public GameRepo(ApplicationDbContext context)
 		{
-			_context = context;
 			igdb = ApiHelper.CreateClient();
 		}
 

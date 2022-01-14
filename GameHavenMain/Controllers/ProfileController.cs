@@ -21,7 +21,7 @@ namespace GameHavenMain.Controllers
 	public class ProfileController : ControllerBase
 	{
 
-		private IUserRepo _userRepo;
+		private readonly IUserRepo _userRepo;
 		private TokenHelper _tokenHelper;
 
 		public ProfileController(IUserRepo userRepo, TokenHelper tokenHelper)

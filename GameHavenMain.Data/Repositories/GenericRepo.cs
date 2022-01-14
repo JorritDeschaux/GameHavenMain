@@ -10,45 +10,45 @@ namespace GameHavenMain.Data.Repositories
 {
 	public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 	{
-		public ApplicationDbContext _context;
-		public DbSet<TEntity> _table = null;
+		private readonly ApplicationDbContext _context;
 
+		public DbSet<TEntity> Table { get; private set; } = null;
 
 		public GenericRepo(ApplicationDbContext context)
 		{
 			_context = context;
-			_table = _context.Set<TEntity>();
+			Table = _context.Set<TEntity>();
 		}
 
 
 		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			return await _table.ToListAsync();
+			return await Table.ToListAsync();
 		}
 
 		public async Task<TEntity> GetByIdAsync(object id)
 		{
-			return await _table.FindAsync(id);
+			return await Table.FindAsync(id);
 		}
 
 		public async Task CreateAsync(TEntity obj)
 		{
-			await _table.AddAsync(obj);
+			await Table.AddAsync(obj);
 
 			await SaveAsync();
 		}
 
 		public async Task UpdateAsync(TEntity obj)
 		{
-			_table.Update(obj);
+			Table.Update(obj);
 
 			await SaveAsync();
 		}
 
 		public async Task DeleteAsync(object id)
 		{
-			TEntity existing = await _table.FindAsync(id);
-			_table.Remove(existing);
+			TEntity existing = await Table.FindAsync(id);
+			Table.Remove(existing);
 
 			await SaveAsync();
 		}

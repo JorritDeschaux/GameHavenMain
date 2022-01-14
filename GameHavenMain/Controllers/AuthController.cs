@@ -19,7 +19,7 @@ namespace GameHavenMain.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IUserRepo _userRepo;
+        private readonly IUserRepo _userRepo;
 		private TokenHelper _tokenHelper;
 
 		public AuthController(IUserRepo userRepo, TokenHelper tokenHelper)
