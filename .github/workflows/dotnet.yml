@@ -40,26 +40,27 @@ jobs:
           shell: powershell
           run: |
             .\.sonar\scanner\dotnet-sonarscanner begin /k:"JorritDeschaux_GameHavenMain" /o:"jorritdeschaux" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+            
+            build:
+              runs-on: ubuntu-latest
+
+              steps:
+              - uses: actions/checkout@v2
+              - name: Setup .NET Core
+                uses: actions/setup-dotnet@v1
+                with:
+                  dotnet-version: 5.0.x
+
+              - name: Install dependencies
+                run: dotnet restore ./GameHavenMain.sln
+
+              - name: Build
+                run: dotnet build GameHavenMain/GameHavenMain.csproj --configuration Release
+
+              - name: Tests
+                run: dotnet test ./GameHavenMain.sln --configuration Release
+                
             .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-        
-    - name: Install dependencies
-      run: dotnet restore ./GameHavenMain.sln
-        
-    - name: Build
-      run: dotnet build GameHavenMain/GameHavenMain.csproj --configuration Release
-      
-    - name: Tests
-      run: dotnet test ./GameHavenMain.sln --configuration Release
   
   push-images-to-hub:
       runs-on: ubuntu-latest
