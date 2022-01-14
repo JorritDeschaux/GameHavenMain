@@ -10,7 +10,7 @@ namespace GameHavenMain.Data.Repositories
 {
 	public class GenericRepo<TEntity> : IGenericRepo<TEntity> where TEntity : class
 	{
-		private readonly ApplicationDbContext _context;
+		internal readonly ApplicationDbContext _context;
 
 		public DbSet<TEntity> Table { get; private set; } = null;
 
