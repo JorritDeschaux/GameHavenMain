@@ -3,20 +3,6 @@ name: .NET
 on: [push]
 
 jobs:
-
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            
             
   build:
       runs-on: ubuntu-latest
@@ -36,6 +22,7 @@ jobs:
         run: dotnet test ./GameHavenMain.sln --configuration Release
   
   push-images-to-hub:
+      needs: build
       runs-on: ubuntu-latest
       
       steps:
@@ -58,6 +45,20 @@ jobs:
           file: GameHavenMain/Dockerfile
           push: true
           tags: jorritdeschaux/gamehaven:latest
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            
           
           
           
